@@ -26,36 +26,32 @@ A full-stack management system tailored for Bangladeshi coaching centers (Scienc
     - **Finance**: Payment (Invoices/Receipts).
     - **Academic**: Exam, Result, Attendance, Notice.
 - [x] **Seeded Academic Catalog**: Populated Science, Commerce, and Arts groups with their respective subjects.
+- [x] **Profile Extensions**: Added bio, phone, and professional descriptions to User and Teacher models.
 
 ### 3. Auth & Authorization (RBAC)
-- [x] Defined Roles: `ADMIN`, `MANAGER`, `TEACHER`, `STUDENT`.
+- [x] Defined Roles: `ADMIN`, `MANAGER`, `TEACHER`, `STUDENT`, `USER` (Visitor).
 - [x] Implemented **Middleware Protection**:
-    - Automatic redirection to role-specific dashboards (e.g., `/dashboard/student`).
-    - Granular route guarding (e.g., preventing students from accessing `/admin`).
-- [x] Established **Dashboard Layouts**: Created route groups `(dashboard)/admin`, `(dashboard)/student`, etc.
+    - Automatic redirection to role-specific dashboards.
+    - Granular route guarding.
+- [x] **Profile Management Logic**:
+    - [x] Backend services for self-service profile updates (Bio, Photo, Phone).
+    - [x] Secure password change logic via Better Auth.
+    - [x] Teacher-specific professional description management.
 
 ---
 
-## 🛠️ Current Status: "The Skeleton is Ready"
-The system has its "brain" (Auth), "bones" (Database), and "nerves" (Middleware). It can recognize who is logged in and where they should go, but the individual feature pages are currently placeholders.
+## 📋 Immediate Work Plan (The Financial Engine)
 
----
+### Phase 1: Billing & Fee Engine (Current)
+1.  **Fee Configuration**: Logic to define base prices for Groups (Full Package) vs. Individual Subjects.
+2.  **Monthly Billing Logic**: A service to generate "Due" records (Invoices) for all active students every month.
+3.  **Discount & Scholarship Logic**: Support for percentage-based or fixed-amount discounts per student.
+4.  **Due Tracking**: Service to calculate "Total Overdue" for student dashboards.
 
-## 📋 Immediate Work Plan (Revised Onboarding Strategy)
-
-### Phase 1: Public Onboarding & Role Assignment
-1.  **Public Self-Registration**: Allow visitors to create accounts (Defaults to a `VISITOR` or `PENDING` role).
-2.  **Manager Member-Review UI**: A dashboard for Managers to see all new registrants.
-3.  **Role Assignment Action**: Manager selects a member and assigns them as either a `STUDENT` or `TEACHER`.
-4.  **Profile Activation**: Upon role assignment, the relevant profile (Student/Teacher) is created/activated.
-
-### Phase 2: Enhanced Profile Management
-1.  **Self-Service Updates**: Users can update their own photos, bios, and passwords.
-2.  **Teacher Customization**: Teachers can add their teaching descriptions and qualifications.
-
-### Phase 3: Dashboard Features (Role-Specific)
-- **Students**: Focus on Fee Tracking (Due/Paid), Results, and Exam Schedules.
-- **Teachers**: Focus on Profile visibility on the public website.
+### Phase 2: User Interface (Dashboards)
+1.  **Manager Member-Review UI**: Review and assign roles to new public visitors.
+2.  **Student Financial Dashboard**: View paid/unpaid invoices and total dues.
+3.  **Teacher Public Showcase**: The public home page components pulling from teacher profiles.
 
 ---
 

@@ -124,6 +124,8 @@ model Student {
   results     Result[]
   attendance  Attendance[]
   payments    Payment[]
+  invoices    Invoice[]
+  discount    Discount?
 
   @@map("student")
 }
@@ -208,16 +210,65 @@ model Enrollment {
   @@map("enrollment")
 }
 
+model FeeConfig {
+  id          String   @id @default(cuid())
+  type        String   // GROUP or SUBJECT
+  targetId    String   @unique // GroupId or SubjectId
+  amount      Decimal
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("fee_config")
+}
+
+model Discount {
+  id          String   @id @default(cuid())
+  studentId   String   @unique
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  type        String   // PERCENTAGE or FIXED
+  value       Decimal  // 20 for 20% or 500 for 500 BDT
+  reason      String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("discount")
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  studentId   String
+  student     Student       @relation(fields: [studentId], references: [id])
+  
+  amount      Decimal       // Total after discount
+  baseAmount  Decimal       // Amount before discount
+  discountAmount Decimal    @default(0)
+  
+  status      PaymentStatus @default(PENDING)
+  month       String        // e.g., "January 2026"
+  dueDate     DateTime
+  
+  payments    Payment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("invoice")
+}
+
 model Payment {
   id          String        @id @default(cuid())
   studentId   String
   student     Student       @relation(fields: [studentId], references: [id])
+  
+  invoiceId   String?
+  invoice     Invoice?      @relation(fields: [invoiceId], references: [id])
+  
   amount      Decimal
-  status      PaymentStatus @default(PENDING)
   method      String?       // bKash, Nagad, Cash, Bank
   transactionId String?    @unique
-  month       String?       // Monthly fee for which month
-  paidAt      DateTime?
+  paidAt      DateTime      @default(now())
+  
   createdAt   DateTime      @default(now())
 
   @@map("payment")
