@@ -38,20 +38,29 @@ A full-stack management system tailored for Bangladeshi coaching centers (Scienc
     - [x] Secure password change logic via Better Auth.
     - [x] Teacher-specific professional description management.
 
+### 4. Billing & Financial Engine (Backend)
+- [x] **Fee Configuration**: Logic to define base prices for Groups (Full Package) vs. Individual Subjects.
+- [x] **Monthly Billing Logic**: Service to generate "Due" records (Invoices) for all active students.
+- [x] **Discount & Scholarship Logic**: Support for percentage-based or fixed-amount discounts per student.
+- [x] **Payment Processing**: Transactional logic to record payments and update invoice statuses.
+
 ---
 
-## 📋 Immediate Work Plan (The Financial Engine)
+## 📋 Immediate Work Plan (UI & Feature Integration)
 
-### Phase 1: Billing & Fee Engine (Current)
-1.  **Fee Configuration**: Logic to define base prices for Groups (Full Package) vs. Individual Subjects.
-2.  **Monthly Billing Logic**: A service to generate "Due" records (Invoices) for all active students every month.
-3.  **Discount & Scholarship Logic**: Support for percentage-based or fixed-amount discounts per student.
-4.  **Due Tracking**: Service to calculate "Total Overdue" for student dashboards.
+### Phase 1: Member Management (High Priority)
+1.  **Manager Member-Review UI**: A dashboard for Managers to see all new registrants (`USER` role).
+2.  **Role Assignment Workflow**: UI to trigger the `assignToStudent` or `assignToTeacher` actions, including ID generation.
+3.  **Onboarding Experience**: Feedback/Success states for users waiting for approval.
 
-### Phase 2: User Interface (Dashboards)
-1.  **Manager Member-Review UI**: Review and assign roles to new public visitors.
-2.  **Student Financial Dashboard**: View paid/unpaid invoices and total dues.
-3.  **Teacher Public Showcase**: The public home page components pulling from teacher profiles.
+### Phase 2: Financial & Student Dashboards
+1.  **Student Financial View**: Dashboard showing due amounts, paid invoices, and payment history.
+2.  **Admin/Manager Finance UI**: Dashboard to view total collections, outstanding dues, and configure fees.
+
+### Phase 3: Public Presence
+1.  **Home Page (Hero + Features)**: Modern landing page for the coaching center.
+2.  **Teacher Directory**: Public-facing list of teachers with their descriptions and specializations.
+3.  **Admission Call-to-Action**: Direct links for public registration.
 
 ---
 
