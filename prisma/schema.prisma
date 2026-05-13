@@ -1,0 +1,274 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  STUDENT
+  TEACHER
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  PARTIAL
+  OVERDUE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  LEAVE
+}
+
+// --- Core Auth Models ---
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  // Profiles
+  student       Student?
+  teacher       Teacher?
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@map("verification")
+}
+
+// --- Business Domain Models ---
+enum StudentStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+model Student {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studentId   String   @unique // Professional ID (e.g., STU-2024-001)
+  status      StudentStatus @default(PENDING)
+  phone       String?
+  address     String?
+  guardianName String?
+  guardianPhone String?
+  
+  groupId     String?
+  group       Group?   @relation(fields: [groupId], references: [id])
+  
+  enrollments Enrollment[]
+  results     Result[]
+  attendance  Attendance[]
+  payments    Payment[]
+
+  @@map("student")
+}
+
+model Teacher {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacherId   String   @unique // Professional ID (e.g., TEA-2024-001)
+  specialization String?
+  phone       String?
+  salary      Decimal?
+
+  batches     Batch[] // Batches assigned to this teacher
+  notices     Notice[] // Notices created by this teacher
+
+  @@map("teacher")
+}
+
+model Group {
+  id          String    @id @default(cuid())
+  name        String    @unique // Science, Commerce, Arts
+  description String?
+  
+  subjects    Subject[]
+  students    Student[] // Default group for students
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("group")
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  name        String   
+  code        String   @unique
+  description String?
+  
+  groupId     String?
+  group       Group?   @relation(fields: [groupId], references: [id])
+  
+  batches     Batch[]
+
+  @@map("subject")
+}
+
+model Batch {
+  id          String   @id @default(cuid())
+  name        String   // e.g., "Batch A - Evening"
+  startTime   String?
+  endTime     String?
+  days        String?  // e.g., "Sun,Tue,Thu"
+  
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  
+  teacherId   String?
+  teacher     Teacher? @relation(fields: [teacherId], references: [id])
+  
+  enrollments Enrollment[]
+  exams       Exam[]
+  attendance  Attendance[]
+
+  @@map("batch")
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id])
+  batchId     String
+  batch       Batch    @relation(fields: [batchId], references: [id])
+  
+  enrolledAt  DateTime @default(now())
+  status      String   @default("ACTIVE") // ACTIVE, COMPLETED, DROPPED
+
+  @@unique([studentId, batchId])
+  @@map("enrollment")
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  studentId   String
+  student     Student       @relation(fields: [studentId], references: [id])
+  amount      Decimal
+  status      PaymentStatus @default(PENDING)
+  method      String?       // bKash, Nagad, Cash, Bank
+  transactionId String?    @unique
+  month       String?       // Monthly fee for which month
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+
+  @@map("payment")
+}
+
+model Exam {
+  id          String   @id @default(cuid())
+  title       String   // e.g., "Mid Term"
+  date        DateTime
+  maxMarks    Int
+  
+  batchId     String
+  batch       Batch    @relation(fields: [batchId], references: [id])
+  
+  results     Result[]
+
+  @@map("exam")
+}
+
+model Result {
+  id          String   @id @default(cuid())
+  examId      String
+  exam        Exam     @relation(fields: [examId], references: [id])
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id])
+  
+  marksObtained Int
+  remarks     String?
+  
+  @@unique([examId, studentId])
+  @@map("result")
+}
+
+model Attendance {
+  id          String           @id @default(cuid())
+  date        DateTime         @default(now())
+  status      AttendanceStatus @default(PRESENT)
+  
+  studentId   String
+  student     Student          @relation(fields: [studentId], references: [id])
+  
+  batchId     String
+  batch       Batch            @relation(fields: [batchId], references: [id])
+
+  @@map("attendance")
+}
+
+model Notice {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  isGlobal    Boolean  @default(true)
+  
+  teacherId   String?
+  teacher     Teacher? @relation(fields: [teacherId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notice")
+}
