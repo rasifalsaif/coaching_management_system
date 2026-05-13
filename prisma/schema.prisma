@@ -117,6 +117,8 @@ model Student {
   guardianName String?
   guardianPhone String?
   
+  customMonthlyFee Decimal? // Manager override for this specific student
+  
   groupId     String?
   group       Group?   @relation(fields: [groupId], references: [id])
   
@@ -155,6 +157,7 @@ model Group {
   
   subjects    Subject[]
   students    Student[] // Default group for students
+  batches     Batch[]   // Batches belonging to this group
   
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -183,8 +186,11 @@ model Batch {
   endTime     String?
   days        String?  // e.g., "Sun,Tue,Thu"
   
-  subjectId   String
-  subject     Subject  @relation(fields: [subjectId], references: [id])
+  groupId     String?
+  group       Group?   @relation(fields: [groupId], references: [id])
+  
+  subjectId   String?
+  subject     Subject? @relation(fields: [subjectId], references: [id])
   
   teacherId   String?
   teacher     Teacher? @relation(fields: [teacherId], references: [id])

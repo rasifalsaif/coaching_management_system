@@ -40,27 +40,38 @@ A full-stack management system tailored for Bangladeshi coaching centers (Scienc
 
 ### 4. Billing & Financial Engine (Backend)
 - [x] **Fee Configuration**: Logic to define base prices for Groups (Full Package) vs. Individual Subjects.
+- [x] **Individual Fee Overrides**: Manager can now set a custom monthly fee for any specific student.
 - [x] **Monthly Billing Logic**: Service to generate "Due" records (Invoices) for all active students.
-- [x] **Discount & Scholarship Logic**: Support for percentage-based or fixed-amount discounts per student.
-- [x] **Payment Processing**: Transactional logic to record payments and update invoice statuses.
+- [x] **Offline Payment System**: Manager UI to record cash/manual payments with instant student dashboard sync.
 
 ---
 
 ## 📋 Immediate Work Plan (UI & Feature Integration)
 
-### Phase 1: Member Management (High Priority)
-1.  **Manager Member-Review UI**: A dashboard for Managers to see all new registrants (`USER` role).
-2.  **Role Assignment Workflow**: UI to trigger the `assignToStudent` or `assignToTeacher` actions, including ID generation.
-3.  **Onboarding Experience**: Feedback/Success states for users waiting for approval.
+### Phase 1: Member Management
+- [x] **Manager Member-Review UI**: A dashboard for Managers to see all new registrants (`USER` role).
+- [x] **Role Assignment Workflow**: UI to trigger the `assignToStudent` or `assignToTeacher` actions, including ID generation.
+- [x] **Custom Pricing**: Manager can set specific fees during or after the admission process.
 
 ### Phase 2: Financial & Student Dashboards
-1.  **Student Financial View**: Dashboard showing due amounts, paid invoices, and payment history.
-2.  **Admin/Manager Finance UI**: Dashboard to view total collections, outstanding dues, and configure fees.
+- [x] **Student Financial View**: Dashboard showing due amounts, paid invoices, and payment history.
+- [x] **Admin/Manager Finance UI**: Dashboard to view and configure base fees for Groups and Subjects.
+- [x] **Batch-Level Scheduling**: Support for group-wide batches (e.g., "Science Batch A") or subject-specific ones.
 
 ### Phase 3: Public Presence
-1.  **Home Page (Hero + Features)**: Modern landing page for the coaching center.
-2.  **Teacher Directory**: Public-facing list of teachers with their descriptions and specializations.
-3.  **Admission Call-to-Action**: Direct links for public registration.
+- [x] **Home Page (Hero + Features)**: Modern landing page for the coaching center.
+- [x] **Teacher Directory/Showcase**: Dynamic public-facing section pulling from the database.
+- [x] **Admission Call-to-Action**: Direct links and integrated UI for public registration.
+
+---
+
+## 📋 Immediate Work Plan (Next Steps)
+
+### Phase 4: Academic Management & Features
+- [x] **Batch & Enrollment UI**: Manager tool to create batches and enroll students.
+- [x] **Manager Attendance UI**: Tool for managers to record absences for any batch.
+- [x] **Manager Result UI**: Tool for managers to create exams and input student marks.
+- [ ] **Notice Board**: Real-time announcement system for teachers and students.
 
 ---
 

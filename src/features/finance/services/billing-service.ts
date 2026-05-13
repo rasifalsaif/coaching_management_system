@@ -19,6 +19,15 @@ export const BillingService = {
 
     if (!student) throw new Error("Student not found");
 
+    // 0. Check for Custom Fee Override (Manager set)
+    if (student.customMonthlyFee) {
+        return {
+            baseAmount: student.customMonthlyFee,
+            discountAmount: new Prisma.Decimal(0),
+            finalAmount: student.customMonthlyFee,
+        };
+    }
+
     let totalBaseAmount = new Prisma.Decimal(0);
 
     // 1. Check for Group-based Fee
@@ -100,5 +109,26 @@ export const BillingService = {
       invoices: unpaidInvoices,
       totalDue,
     };
+  },
+
+  /**
+   * Fetches the full profile of a student using their userId.
+   */
+  async getStudentFullProfile(userId: string) {
+    return prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        student: {
+          include: {
+            group: true,
+            enrollments: {
+              include: { batch: { include: { subject: true } } }
+            },
+            discount: true,
+          }
+        }
+      }
+    });
   }
 };
+

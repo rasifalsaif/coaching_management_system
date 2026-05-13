@@ -1,43 +1,56 @@
 "use server";
 
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { AcademicService } from "../services/academic-service";
-import { groupSchema, subjectSchema, GroupInput, SubjectInput } from "../schemas/academic-schemas";
+import { batchSchema, BatchInput, enrollmentSchema, EnrollmentInput } from "../schemas/academic-schemas";
+import { getSession } from "@/lib/auth-client";
 
-export async function createGroupAction(data: GroupInput) {
-  const validated = groupSchema.parse(data);
-  const group = await AcademicService.createGroup(validated);
-  revalidatePath("/dashboard/admin/academic");
-  return group;
+export async function createBatchAction(data: BatchInput) {
+    const session = await getSession();
+    if (!session || !["ADMIN", "MANAGER"].includes(session.user.role)) {
+        throw new Error("Unauthorized");
+    }
+
+    const validated = batchSchema.parse(data);
+
+    const batch = await prisma.batch.create({
+        data: validated,
+    });
+
+    revalidatePath("/dashboard/admin/academics");
+    revalidatePath("/dashboard/admin/batches");
+    return { success: true, data: batch };
 }
 
-export async function updateGroupAction(id: string, data: GroupInput) {
-  const validated = groupSchema.parse(data);
-  const group = await AcademicService.updateGroup(id, validated);
-  revalidatePath("/dashboard/admin/academic");
-  return group;
+export async function enrollStudentAction(data: EnrollmentInput) {
+    const session = await getSession();
+    if (!session || !["ADMIN", "MANAGER"].includes(session.user.role)) {
+        throw new Error("Unauthorized");
+    }
+
+    const validated = enrollmentSchema.parse(data);
+
+    const enrollment = await prisma.enrollment.create({
+        data: {
+            studentId: validated.studentId,
+            batchId: validated.batchId,
+            status: "ACTIVE",
+        },
+    });
+
+    revalidatePath("/dashboard/admin/students");
+    revalidatePath("/dashboard/admin/batches");
+    return { success: true, data: enrollment };
 }
 
-export async function deleteGroupAction(id: string) {
-  await AcademicService.deleteGroup(id);
-  revalidatePath("/dashboard/admin/academic");
-}
-
-export async function createSubjectAction(data: SubjectInput) {
-  const validated = subjectSchema.parse(data);
-  const subject = await AcademicService.createSubject(validated);
-  revalidatePath("/dashboard/admin/academic");
-  return subject;
-}
-
-export async function updateSubjectAction(id: string, data: SubjectInput) {
-  const validated = subjectSchema.parse(data);
-  const subject = await AcademicService.updateSubject(id, validated);
-  revalidatePath("/dashboard/admin/academic");
-  return subject;
-}
-
-export async function deleteSubjectAction(id: string) {
-  await AcademicService.deleteSubject(id);
-  revalidatePath("/dashboard/admin/academic");
+export async function getAllBatchesAction() {
+    return prisma.batch.findMany({
+        include: {
+            subject: true,
+            group: true,
+            teacher: { include: { user: true } },
+            _count: { select: { enrollments: true } }
+        },
+        orderBy: { name: "asc" }
+    });
 }
