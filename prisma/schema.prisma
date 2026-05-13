@@ -14,6 +14,7 @@ enum Role {
   MANAGER
   STUDENT
   TEACHER
+  USER // New role for unassigned public visitors
 }
 
 enum PaymentStatus {
@@ -37,8 +38,10 @@ model User {
   name          String
   email         String    @unique
   emailVerified Boolean   @default(false)
-  image         String?
-  role          Role      @default(STUDENT)
+  image         String?   // For profile photo
+  role          Role      @default(USER) // Default for public visitors
+  phone         String?   @unique
+  bio           String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
@@ -106,9 +109,10 @@ model Student {
   id          String   @id @default(cuid())
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  studentId   String   @unique // Professional ID (e.g., STU-2024-001)
+  studentId   String?  @unique // Assigned by Manager (e.g., STU-2026-001)
   status      StudentStatus @default(PENDING)
-  phone       String?
+  
+  college     String?
   address     String?
   guardianName String?
   guardianPhone String?
@@ -128,13 +132,16 @@ model Teacher {
   id          String   @id @default(cuid())
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teacherId   String   @unique // Professional ID (e.g., TEA-2024-001)
+  teacherId   String?  @unique // Assigned by Manager (e.g., TEA-2026-001)
   specialization String?
-  phone       String?
-  salary      Decimal?
+  experience    String?
+  qualification String?
+  description   String? // Optional teaching description / bio for public site
+  salary        Decimal?
+  status        String   @default("ACTIVE") // ACTIVE, INACTIVE
 
-  batches     Batch[] // Batches assigned to this teacher
-  notices     Notice[] // Notices created by this teacher
+  batches     Batch[] 
+  notices     Notice[] 
 
   @@map("teacher")
 }

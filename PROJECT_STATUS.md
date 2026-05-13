@@ -41,21 +41,21 @@ The system has its "brain" (Auth), "bones" (Database), and "nerves" (Middleware)
 
 ---
 
-## 📋 Immediate Work Plan (The Next Steps)
+## 📋 Immediate Work Plan (Revised Onboarding Strategy)
 
-### Phase 1: Student Admission & Approval (High Priority)
-1.  **Public Registration Page**: Create a clean, responsive form for new students to apply.
-2.  **Manager Approval Dashboard**: Build the UI for Managers to view `PENDING` students and "Accept" them (setting status to `ACTIVE`).
-3.  **Student ID Generation**: Implement logic to assign professional IDs (e.g., `STU-2026-001`) upon approval.
+### Phase 1: Public Onboarding & Role Assignment
+1.  **Public Self-Registration**: Allow visitors to create accounts (Defaults to a `VISITOR` or `PENDING` role).
+2.  **Manager Member-Review UI**: A dashboard for Managers to see all new registrants.
+3.  **Role Assignment Action**: Manager selects a member and assigns them as either a `STUDENT` or `TEACHER`.
+4.  **Profile Activation**: Upon role assignment, the relevant profile (Student/Teacher) is created/activated.
 
-### Phase 2: Academic Setup (Batches & Schedules)
-1.  **Batch Management**: Admin UI to create Batches (e.g., "HSC 2026 - Batch A") and assign them to Subjects and Teachers.
-2.  **Enrollment Engine**: Logic to enroll a student in a "Full Group Package" vs. "Individual Subjects."
+### Phase 2: Enhanced Profile Management
+1.  **Self-Service Updates**: Users can update their own photos, bios, and passwords.
+2.  **Teacher Customization**: Teachers can add their teaching descriptions and qualifications.
 
-### Phase 3: Billing & Finance
-1.  **Fee Definition**: Set prices for Groups vs. Individual Subjects.
-2.  **Monthly Invoice Generation**: Automated logic to create "Monthly Due" records for all active students.
-3.  **Payment Collection**: Manager UI to record cash payments and issue digital receipts.
+### Phase 3: Dashboard Features (Role-Specific)
+- **Students**: Focus on Fee Tracking (Due/Paid), Results, and Exam Schedules.
+- **Teachers**: Focus on Profile visibility on the public website.
 
 ---
 
