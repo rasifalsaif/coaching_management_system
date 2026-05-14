@@ -67,11 +67,18 @@ A full-stack management system tailored for Bangladeshi coaching centers (Scienc
 
 ## 📋 Immediate Work Plan (Next Steps)
 
-### Phase 4: Academic Management & Features
+### Phase 4: Academic Management & Features (COMPLETE)
 - [x] **Batch & Enrollment UI**: Manager tool to create batches and enroll students.
 - [x] **Manager Attendance UI**: Tool for managers to record absences for any batch.
 - [x] **Manager Result UI**: Tool for managers to create exams and input student marks.
-- [ ] **Notice Board**: Real-time announcement system for teachers and students.
+- [x] **Notice Board**: Real-time announcement system for teachers and students.
+
+### Phase 5: Reporting, Communication & Polish
+- [ ] **Financial Analytics**: Admin dashboard with monthly collection charts and due summaries.
+- [ ] **Student Performance Analytics**: Visual charts for students to track their result trends.
+- [ ] **SMS Integration Gateway**: Logic to send automated SMS for attendance alerts and fee reminders (Twilio/local provider).
+- [ ] **Student Mobile Experience**: Targeted UI improvements for better mobile usage on small screens.
+- [ ] **Parental Access (Optional)**: Read-only access for parents to view their child's progress.
 
 ---
 
@@ -83,5 +90,5 @@ A full-stack management system tailored for Bangladeshi coaching centers (Scienc
 ---
 
 ## 📅 Last Updated
-**Date:** Wednesday, May 13, 2026
-**Status:** Infrastructure Complete | Moving to Feature Implementation (Admission).
+**Date:** Thursday, May 14, 2026
+**Status:** Core Feature Lifecycle Complete | Moving to Phase 5 (Advanced Reporting & Alerts).

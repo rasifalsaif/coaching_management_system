@@ -68,4 +68,23 @@ export const ManagementService = {
       });
     });
   },
+
+  async getDashboardStats() {
+    const [studentCount, teacherCount, batchCount, pendingInvoices] = await Promise.all([
+      prisma.student.count({ where: { status: "ACTIVE" } }),
+      prisma.teacher.count({ where: { status: "ACTIVE" } }),
+      prisma.batch.count(),
+      prisma.invoice.aggregate({
+        _sum: { amount: true },
+        where: { status: { in: ["PENDING", "PARTIAL", "OVERDUE"] } }
+      })
+    ]);
+
+    return {
+      studentCount,
+      teacherCount,
+      batchCount,
+      pendingAmount: Number(pendingInvoices._sum.amount || 0)
+    };
+  }
 };

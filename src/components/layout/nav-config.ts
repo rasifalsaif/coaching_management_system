@@ -22,6 +22,7 @@ export type NavItem = {
 export const NAV_CONFIG: Record<string, NavItem[]> = {
     ADMIN: [
         { title: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
+        { title: "Notices", href: "/dashboard/notices", icon: Bell },
         { title: "New Registrations", href: "/dashboard/admin/registrations", icon: UserPlus },
         { title: "Students", href: "/dashboard/admin/students", icon: GraduationCap },
         { title: "Teachers", href: "/dashboard/admin/teachers", icon: Presentation },
@@ -31,19 +32,21 @@ export const NAV_CONFIG: Record<string, NavItem[]> = {
     ],
     MANAGER: [
         { title: "Overview", href: "/dashboard/manager", icon: LayoutDashboard },
+        { title: "Notices", href: "/dashboard/notices", icon: Bell },
         { title: "New Registrations", href: "/dashboard/admin/registrations", icon: UserPlus },
         { title: "Students", href: "/dashboard/admin/students", icon: GraduationCap },
         { title: "Finance", href: "/dashboard/admin/finance", icon: CreditCard },
     ],
     TEACHER: [
         { title: "My Dashboard", href: "/dashboard/teacher", icon: LayoutDashboard },
+        { title: "Notices", href: "/dashboard/notices", icon: Bell },
         { title: "My Batches", href: "/dashboard/teacher/batches", icon: Presentation },
         { title: "Attendance", href: "/dashboard/teacher/attendance", icon: ClipboardList },
-        { title: "Notices", href: "/dashboard/teacher/notices", icon: Bell },
         { title: "My Profile", href: "/dashboard/teacher/profile", icon: UserCircle },
     ],
     STUDENT: [
         { title: "My Dashboard", href: "/dashboard/student", icon: LayoutDashboard },
+        { title: "Notices", href: "/dashboard/notices", icon: Bell },
         { title: "My Finance", href: "/dashboard/student/finance", icon: CreditCard },
         { title: "My Results", href: "/dashboard/student/results", icon: GraduationCap },
         { title: "My Schedule", href: "/dashboard/student/schedule", icon: ClipboardList },
@@ -51,6 +54,7 @@ export const NAV_CONFIG: Record<string, NavItem[]> = {
     ],
     USER: [
         { title: "Status", href: "/dashboard/user", icon: LayoutDashboard },
+        { title: "Notices", href: "/dashboard/notices", icon: Bell },
         { title: "Complete Profile", href: "/dashboard/user/profile", icon: UserCircle },
     ]
 };
